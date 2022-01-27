@@ -55,8 +55,7 @@ The maximum number of seconds a duration can represent
  ! minumum: 1 day,
  ! maximum: 6 months
  ! -->
-<duration-input value="604800" min="86400" max="15778800">
-</regex-input>
+<duration-input value="604800" min="86400" max="15778800"></regex-input>
 ```
 
 ### `label` *{string}*
