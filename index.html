@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/src/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Regex input</title>
+		<script type="module" src="/src/regex-input.ts"></script>
+		<style>
+			:root {
+				--btn-colour: #fff;
+				--btn-bg-colour: rgb(0, 85, 34);
+				--txt-colour: #fff;
+				--bg-colour: #2d2b2b;
+				--border-radius: 0.85rem;
+			}
+			body {
+				background-color: var(--bg-colour);
+				color: var(--text-colour);
+				font-family: Arial, Helvetica, sans-serif;
+			}
+			.field {
+				display: flex;
+				align-items: flex-start;
+				margin: 1rem 0;
+				padding: 1rem;
+				border-top: 0.1rem dotted #fff;
+			}
+			.field label {
+				padding-right: 1rem;
+				color: var(--txt-colour);
+			}
+		</style>
+	</head>
+	<body>
+		<h1><code>Duration input</code> web component;</h1>
+
+		<p>
+			<code>&lt;duration-input&gt;</code> is a web component that allows users
+			to enter a duration in a human friendly way but with the output being seconds.
+		</p>
+
+		<p class="field">
+			<duration-input id="imp" pattern="179">
+				<p>This is child content</p>
+			</duration-input>
+		</p>
+
+
+		<script type="text/javascript">
+
+			function changer (e) {
+				console.group('duration-input event listener')
+				console.log('this:', this)
+				console.log('this.flags:', this.__flags)
+				console.log('this.value:', this.__value)
+				console.log('this.wholeRegex:', this.wholeRegex)
+				console.groupEnd()
+			}
+			document.onreadystatechange = function () {
+				if (document.readyState === 'complete' ||
+					document.readyState === 'interactive'
+				) {
+					for (let a = 1; a <= 8; a += 1) {
+						const reg = document.getElementById('regex-input--' + a);
+						reg.addEventListener('change', changer)
+						// console.log('reg' + a + ':', reg)
+					}
+				}
+			}
+		</script>
+  	</body>
+</html>
