@@ -3,14 +3,16 @@
 `<durations-input>` is a web component that allows users to enter a
 duration in a human friendly way but with the output being seconds.
 
-> __NOTE:__ Because `<durations-input>` uses two fields to represent
->           a single value a change to one may not represent the
->           final value the user wants.
->
-> To get around this the `<durations-input>` component uses a "set"
-> button to allow the user to tell the client when they are ready.
-> This may not be desirable in some use cases. To remove the "set"
-> button, just include the `nobtn`
+__NOTE:__ Because `<durations-input>` uses two fields to represent a
+          single value a change to one may not represent the final
+          value the user wants. To get around this,
+          `<durations-input>` uses a "set" button to allow the user
+          to tell the client when everything is ready.
+
+This may not be desirable in some use cases. To remove the "set"
+button, just include the `nobtn`. However this will probably result
+in multiple change events if the user wants to change both value and
+unit.
 
 -----
 
@@ -20,7 +22,7 @@ To allow for enough flexibility, this component has four attributes.
 
 ```html
 <!-- duration: 1 week -->
-<duration-input value="604800"></regex-input>
+<duration-input value="604800"></duration-input>
 ```
 
 ### `value` *{number}*
@@ -40,7 +42,7 @@ The minumum number of seconds a duration can represent
  ! duration: 1 week
  ! minumum: 1 hour
  ! -->
-<duration-input value="604800" min="3600"></regex-input>
+<duration-input value="604800" min="3600"></duration-input>
 ```
 
 ### `max` *{number}*
@@ -55,7 +57,7 @@ The maximum number of seconds a duration can represent
  ! minumum: 1 day,
  ! maximum: 6 months
  ! -->
-<duration-input value="604800" min="86400" max="15778800"></regex-input>
+<duration-input value="604800" min="86400" max="15778800"></duration-input>
 ```
 
 ### `label` *{string}*
@@ -66,7 +68,7 @@ String to use as the button label
 
 ```html
 <!-- duration: 1 week -->
-<duration-input value="604800" label="update"></regex-input>
+<duration-input value="604800" label="update"></duration-input>
 ```
 
 ### `nobtn` *{boolean}*
@@ -80,7 +82,7 @@ Whether or not to hide the "set" button.
 
 ```html
 <!-- duration: 1 week -->
-<duration-input value="604800" nobtn></regex-input>
+<duration-input value="604800" nobtn></duration-input>
 ```
 
 -----
