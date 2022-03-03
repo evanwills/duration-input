@@ -49,24 +49,46 @@ export class DurationInput extends LitElement {
   noBtn : boolean = false;
 
   static styles = css`
-    :root {
-      --wc-border-radius: var(--border-radius, 0.75rem);
-      --wc-text-colour: var(--txt-colour, rgb(255, 255, 255));
-      --wc-bg-colour: var(--bg-colour, rgb(0, 85, 34));
-      --wc-error-bg-colour: var(--error-bg-colour, rgb(150, 0, 0));
-      --wc-error-text-colour: var(--error-txt-colour, rgb(255, 255, 255));
-      --wc-line-width: var(--border-thickness, 0.075rem);
-      --wc-max-width: var(--max-regex-width, 30rem);
-      --wc-default-input-font: 'Courier New', Courier, monospace;
-      --wc-input-font: var(--input-font-family, var(--wc-default-input-font));
-      --wc-outline-width: var(--outline-thickness, 0.25rem);
-      --wc-outline-style: var(--outline-style, dotted);
-      --wc-outline-offset: var(--outline-offset, 0.2rem);
+    :host {
+      --wc-error-bg-color: #000;
+      --wc-error-border-color: transparent;
+      --wc-error-border-width: 0;
+      --wc-error-border-radius: 0.75rem;
+      --wc-error-color: #fff;
+      --wc-error-padding: 1rem;
 
-      background-color: var(--wc-bg-colour, inherit);
-      color:  var(--wc-text-colour, inherit);
-      font-family: inherit;
-      font-size: inherit;
+      --wc-outline-color: #fff;
+      --wc-outline-offset: 0.2rem;
+      --wc-outline-style: dotted;
+      --wc-outline-width: 0.25rem;
+
+      --wc-btn-bg-color: rgb(0, 85, 34);
+      --wc-btn-border-color: transparent;
+      --wc-btn-border-width: 0;
+      --wc-btn-border-radius: 0.75rem;
+      --wc-btn-color: #fff;
+      --wc-btn-font-family: inherit;
+      --wc-btn-font-size: inherit;
+      --wc-btn-padding: 0.2rem 0.75rem;
+
+      --wc-input-bg-color: #000;
+      --wc-input-border-color: #fff;
+      --wc-input-border-style: solid;
+      --wc-input-border-width: 0.075rem;
+      --wc-input-border-radius: 0.75rem;
+      --wc-input-color: #fff;
+      --wc-input-font-family: 'Courier New', Courier, monospace;
+      --wc-input-font-size: 1rem;
+      --wc-input-padding-top: 0.1rem;
+      --wc-input-padding-right: 0.5rem;
+      --wc-input-padding-bottom: 0.1rem;
+      --wc-input-padding-left: 0.5rem;
+      --wc-input-width: 6rem;
+
+      background-color: inherit
+      color: inherit
+      font-family: inherit
+      font-size: inherit
     }
     .sr-only {
       border: 0;
@@ -79,31 +101,37 @@ export class DurationInput extends LitElement {
       white-space: nowrap;
       width: 1px;
     }
-    .inputs {
-      background-color: var(--wc-bg-colour, #000);
-      border: 0.05rem solid var(--wc-text-colour);
-      border-radius: var(--wc-border-radius);
+    .wrap {
+      background-color: var(--wc-input-bg-color);
+      border: 0.05rem solid var(--wc-input-border-color);
+      border-radius: var(--wc-input-border-radius);
       overflow: hidden;
+      padding: var(--wc-input-padding-top)
+               var(--wc-input-padding-right)
+               var(--wc-input-padding-bottom)
+               var(--wc-input-padding-left);
     }
     input {
       background-color: transparent;
       border: none;
-      color: var(--wc-text-colour, #fff);
+      color: var(--wc-input-color);
       display-inline-block;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 0.875rem;
+      font-family: var(--wc-input-font-family);
+      font-size: var(--wc-input-font-size);
       font-weight: bold;
       padding-left: 0.5rem;
       padding-right: 0;
-      transform: translateY(-0.09rem);
+      transform: translateY(-0.07rem);
       text-align: right;
-      width: 6rem;
+      width: var(--wc-input-width: 6rem);
       display: inline-block;
     }
     select {
       background-color: transparent;
       border: none;
-      color: var(--wc-text-colour, #fff);
+      color: var(--wc-input-color);
+      font-family: var(--wc-input-font-family);
+      font-size: var(--wc-input-font-size);
       padding-left: 0.2rem;
     }
     option {
@@ -115,11 +143,15 @@ export class DurationInput extends LitElement {
       color: var(--text-colour);
     }
     button {
-      border-radius: var(--wc-border-radius);
-      border: 0.05rem solid var(--wc-btn-colour);
-      padding: 0.1rem var(--wc-border-radius);
-      background-color: var(--wc-btn-bg-colour, #2d2b2b);;
+      display: inline-block;
+      background-color: var(--wc-btn-bg-color, #2d2b2b);;
+      border-radius: var(--wc-btn-border-radius);
+      border-color: var(--wc-btn-border-color);
+      border-style: 0.05rem solid var(--wc-btn-border-style);
+      border-width: 0.05rem solid var(--wc-btn-border-width);
       color: var(--wc-btn-colour, #fff);
+      margin-left: 0.5rem;
+      padding: var(--wc-btn-padding);
       /* font-weight: bold; */
       text-transform: uppercase;
     }
@@ -194,15 +226,37 @@ export class DurationInput extends LitElement {
    * for the supplied value
    */
   _setUnitValue () : void {
-    for (let a = 0; a < this._units.length; a += 1) {
-      if (this.value >= this._units[a].value) {
-        // TODO: work out if value can be more cleanly represented by
-        //       a larger integer for a smaller unit
-        this._humanValue = Math.round((this.value / this._units[a].value) * 1000) / 1000;
-        this._unitStr = this._units[a].key
-        this._unitVal = this._units[a].value
+    const c = this._units.length
+    let unit : Iunit|null = null
+
+    // Lets see if we can get a nice round unit value
+    for (let a = 0; a < c; a += 1) {
+      if ((this.value % this._units[a].value) === 0) {
+        // Great this unit devides evenly into our value
+        // We'll use this one
+        unit = this._units[a]
         break;
       }
+    }
+
+    if (unit === null) {
+      // Bummer we going to have to go with best fit
+
+      for (let a = 0; a < c; a += 1) {
+        if (this.value >= this._units[a].value) {
+          // This unit is as good as we're going to get
+          unit = this._units[a]
+          break;
+        }
+      }
+    }
+
+    if (unit !== null) {
+      this._humanValue = Math.round((this.value / unit.value) * 1000) / 1000;
+      this._unitStr = unit.key
+      this._unitVal = unit.value
+    } else {
+      throw Error('unit is NULL. This should never happen!!!')
     }
   }
 
@@ -297,7 +351,7 @@ export class DurationInput extends LitElement {
     const s = this._s(this._humanValue);
 
     return html`
-      <span class="inputs">
+      <span class="wrap">
         <label for="duration-value" class="sr-only">Duration value</label><!--
         --><input id="duration-value" type="number" .value="${this._humanValue}" min="${this.min}" max="${this.max}" step="0.001" @change=${this.valueChange} /><!--
 
